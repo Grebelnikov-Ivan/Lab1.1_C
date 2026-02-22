@@ -1,18 +1,18 @@
 #include <stdio.h>
-#include <string.h>
 
 char* creat_set(char st[]);
 char* del_same_ones(char st[], char ch, int start_i);
 char* compact_str_to_condition(char st1[], char st2[]);
+int analogue_strlen(const char st[]);
 
 int main() {
     char st1[1000], st2[1000];
     scanf("%s", st1);
     scanf("%s", st2);
-    char* result = creat_set(st2);
-    printf("%s", result);
+    /*char* result = creat_set(st2);
+    printf("%s", result);*/
     char* result2 = compact_str_to_condition(st1, st2);
-    printf("%s", result2);
+    printf("rez: %s", result2);
 
     return 0;
 
@@ -21,13 +21,13 @@ int main() {
 
 char* creat_set(char st[]){
     int i = 0;
-    int len_st = strlen(st);
+    int len_st = analogue_strlen(st);
     while (i < len_st){
         int j = i + 1;
         while(j < len_st){
             if (st[i] == st[j]){
                 st = del_same_ones(st, st[i], j);
-                len_st = strlen(st);
+                len_st = analogue_strlen(st);
                 break;
             }
             else{
@@ -45,7 +45,7 @@ char* del_same_ones(char st[], char ch, int start_i){
     int i = start_i;
     int j = start_i;
 
-    int len_st = strlen(st);
+    int len_st = analogue_strlen(st);
     while (i < len_st){
         if (st[i] != ch) {
             st[j] = st[i];
@@ -60,15 +60,16 @@ char* del_same_ones(char st[], char ch, int start_i){
 }
 
 char* compact_str_to_condition(char st1[], char st2[]){
+    st2 = creat_set(st2);
     int i = 0;
-    int len_st1 = strlen(st1);
+    int len_st1 = analogue_strlen(st1);
     while (i < len_st1){
         int j = 0;
-        int len_st2 = strlen(st2);
+        int len_st2 = analogue_strlen(st2);
         while(j < len_st2){
             if (st1[i] == st2[j]){
                 st1 = del_same_ones(st1, st1[i], i);
-                len_st1 = strlen(st1);
+                len_st1 = analogue_strlen(st1);
                 i--;
                 break;
             }
@@ -79,6 +80,14 @@ char* compact_str_to_condition(char st1[], char st2[]){
         i++;
     }
     return st1;
+}
+
+
+int analogue_strlen(const char st[]){
+    int len = 0;
+    while (st[len] != '\0')
+        len ++;
+    return len;
 }
 
 
