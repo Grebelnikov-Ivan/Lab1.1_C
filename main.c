@@ -3,15 +3,16 @@
 
 char* creat_set(char st[]);
 char* del_same_ones(char st[], char ch, int start_i);
+char* compact_str_to_condition(char st1[], char st2[]);
 
 int main() {
     char st1[1000], st2[1000];
     scanf("%s", st1);
-    // printf("%s", st1);
     scanf("%s", st2);
     char* result = creat_set(st2);
     printf("%s", result);
-
+    char* result2 = compact_str_to_condition(st1, st2);
+    printf("%s", result2);
 
     return 0;
 
@@ -57,4 +58,27 @@ char* del_same_ones(char st[], char ch, int start_i){
         printf("%c", st[c]);*/
     return st;
 }
+
+char* compact_str_to_condition(char st1[], char st2[]){
+    int i = 0;
+    int len_st1 = strlen(st1);
+    while (i < len_st1){
+        int j = 0;
+        int len_st2 = strlen(st2);
+        while(j < len_st2){
+            if (st1[i] == st2[j]){
+                st1 = del_same_ones(st1, st1[i], i);
+                len_st1 = strlen(st1);
+                i--;
+                break;
+            }
+            else{
+                j++;
+            }
+        }
+        i++;
+    }
+    return st1;
+}
+
 
