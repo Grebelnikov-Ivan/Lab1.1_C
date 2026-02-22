@@ -6,9 +6,10 @@ char* compact_str_to_condition(char st1[], char st2[]);
 int analogue_strlen(const char st[]);
 
 int main() {
-    char st1[1000], st2[1000];
-    scanf("%s", st1);
-    scanf("%s", st2);
+    // scanf("%s", st1);
+    // scanf("%s", st2);
+    char st1[1000] = "lmnawkagg"; 
+    char st2[1000] = "anwwamnn";
     /*char* result = creat_set(st2);
     printf("%s", result);*/
     char* result2 = compact_str_to_condition(st1, st2);
