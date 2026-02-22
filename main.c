@@ -1,30 +1,46 @@
 #include <stdio.h>
 #include <string.h>
 
-void creat_set(char st[]);
-void del_same_ones(char st[], char ch, int start_i, char**r_st, int*r_len);
+char* creat_set(char st[]);
+char* del_same_ones(char st[], char ch, int start_i);
 
 int main() {
     char st1[1000], st2[1000];
     scanf("%s", st1);
-    printf("%s", st1);
+    // printf("%s", st1);
     scanf("%s", st2);
-    char* r_st;
-    int r_len;
-    del_same_ones(st2, 'a', 3, &r_st, &r_len);
-    printf("%s", r_st);
-    printf("%d", r_len);
+    char* result = creat_set(st2);
+    printf("%s", result);
+
 
     return 0;
 
 }
 
 
-void creat_set(char st[]){
+char* creat_set(char st[]){
+    int i = 0;
+    int len_st = strlen(st);
+    while (i < len_st){
+        int j = i + 1;
+        while(j < len_st){
+            if (st[i] == st[j]){
+                st = del_same_ones(st, st[i], j);
+                len_st = strlen(st);
+                break;
+            }
+            else{
+                j++;
+            }
 
+        }
+        i++;
+    }
+    return st;
 }
 
-void del_same_ones(char st[], char ch, int start_i, char**r_st, int*r_len){
+
+char* del_same_ones(char st[], char ch, int start_i){
     int i = start_i;
     int j = start_i;
 
@@ -37,10 +53,8 @@ void del_same_ones(char st[], char ch, int start_i, char**r_st, int*r_len){
         i ++;
     }
     st[j] = '\0';
-    printf("%s", st);
     /*for (int c = 0; c < j; c ++)
         printf("%c", st[c]);*/
-    *r_st = st;
-    *r_len = j;
+    return st;
 }
 
