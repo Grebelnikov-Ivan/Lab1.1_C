@@ -24,7 +24,7 @@ int print_all_matching_words(const char st[], const char w[]);
 int main() {
     // lab1_1();
 
-    lab1_2();
+    // lab1_2();
 
     // lab1_3();
 
@@ -136,8 +136,12 @@ int analogue_strlen(const char st[]){
 
 
 void lab1_2(){
-    // char st1[1000] = "aewr4";
-    char st1[1000] = "aewr4";
+    char st1[1000] = "3468932";
+    // char st1[1000] = "";
+    // char st1[1000] = "3";
+    // char st1[1000] = "n";
+    // char st1[1000] = "n4";
+    // char st1[1000] = "14";
     int len_st = analogue_strlen(st1);
     do_check(st1, len_st);
 }
