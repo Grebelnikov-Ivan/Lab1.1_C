@@ -1,21 +1,23 @@
 #include <stdio.h>
 
+void lab1_1();
 char* creat_set(char st[]);
 char* del_same_ones(char st[], char ch, int start_i);
 char* compact_str_to_condition(char st1[], char st2[]);
 int analogue_strlen(const char st[]);
 
 int main() {
-    // scanf("%s", st1);
-    // scanf("%s", st2);
-    char st1[1000] = "lmnawkagg"; 
-    char st2[1000] = "anwwamnn";
-    /*char* result = creat_set(st2);
-    printf("%s", result);*/
-    char* result2 = compact_str_to_condition(st1, st2);
-    printf("rez: %s", result2);
+    lab1_1();
 
     return 0;
+}
+
+
+void lab1_1(){
+    char st1[1000] = "lmnawkagg";
+    char st2[1000] = "anwwamnn";
+    char* result2 = compact_str_to_condition(st1, st2);
+    printf("rez: %s", result2);
 
 }
 
