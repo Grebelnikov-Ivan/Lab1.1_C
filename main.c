@@ -6,8 +6,19 @@ char* del_same_ones(char st[], char ch, int start_i);
 char* compact_str_to_condition(char st1[], char st2[]);
 int analogue_strlen(const char st[]);
 
+
+void lab1_2();
+int parity_check(const char st[], int len_st);
+int not_empty(int len_st);
+int only_numbers(const char st[], int len_st);
+int divisible_4(const char st[], int len_st);
+int do_check(const char st[], int len_st);
+
+
 int main() {
     lab1_1();
+
+    lab1_2();
 
     return 0;
 }
@@ -57,8 +68,6 @@ char* del_same_ones(char st[], char ch, int start_i){
         i ++;
     }
     st[j] = '\0';
-    /*for (int c = 0; c < j; c ++)
-        printf("%c", st[c]);*/
     return st;
 }
 
@@ -92,5 +101,77 @@ int analogue_strlen(const char st[]){
         len ++;
     return len;
 }
+
+
+void lab1_2(){
+    char st1[1000] = "aewr4";
+    int len_st = analogue_strlen(st1);
+    do_check(st1, len_st);
+}
+
+
+
+int not_empty(int len_st){
+    if (len_st == 0)
+        return 1;
+    return 0;
+}
+
+
+int parity_check(const char st[], int len_st){
+    char st2[6] = "02468";
+    for (int i = 0; i < 5; i ++){
+        if (st[len_st - 1] == st2[i]){
+            return 0;
+        }
+    }
+    return 1;
+}
+
+int only_numbers(const char st[], int len_st){
+    for (int i = 0; i < len_st; i++) {
+        if (st[i] < '0' || st[i] > '9') {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+int divisible_4(const char st[], int len_st){
+    if (len_st == 1){
+        if ((st[0] - '0') % 4 == 0)
+            return 1;
+    }
+
+    if ((st[len_st - 1] - '0' + (st[len_st - 2] - '0') * 10) % 4 == 0)
+        return 0;
+    return 1;
+}
+
+int do_check(const char st[], int len_st){
+    if (not_empty(len_st) != 0){
+        printf("the line is empty");
+        return 1;
+    }
+    if (parity_check(st, len_st) != 0) {
+        printf("it is not an even or decimal number, meaning it is not divisible by 4");
+        return 1;
+    }
+
+    if (only_numbers(st, len_st) != 0) {
+        printf("the string is not just numbers");
+        return 1;
+    }
+
+    if (divisible_4(st, len_st) != 0)
+        printf("the number is not divisible by 4");
+    else
+        printf("the number is divisible by 4");
+    return 0;
+}
+
+
+
+
 
 
