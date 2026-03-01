@@ -23,11 +23,11 @@ int print_all_matching_words(char st[], const char w[]);
 
 
 int main() {
-    lab1_1();
+    // lab1_1();
 
     // lab1_2();
 
-    // lab1_3();
+    lab1_3();
 
     return 0;
 }
@@ -207,10 +207,10 @@ int do_check(const char st[], int len_st){
 
 
 int lab1_3() {
-    char st[1000] = " qwe   vqwe qw wq,qww q.";
-    char w[1000] = "qw";
+    // char st[1000] = "qwe   vqwe qw wq,qww q.";
+    // char w[1000] = "qw";
 
-    // char st[1000] = "as a fa a .";
+    // char st[1000] = "as,a fa a.";
     // char w[1000] = "ammm";
 
     // char st[1000] = "as ad af a .";
@@ -219,8 +219,8 @@ int lab1_3() {
     // char st[1000] = "as ad as .";
     // char w[1000] = "asssss";
 
-    // char st[1000] = "as ad af.";
-    // char w[1000] = "am";
+    // char st[1000] = "as ad af as.";
+    // char w[1000] = "as";
 
     // char st[1000] = "as ad af.";
     // char w[1000] = "amSD";
@@ -231,7 +231,6 @@ int lab1_3() {
     if (check_w(w) == 1)
         return 1;
     change_st_w(st, w);
-    printf("%s", st);
     print_all_matching_words(st, w);
     return 0;
 }
@@ -240,7 +239,7 @@ int lab1_3() {
 int check_correctness_symbol(char ch){
     if (ch > 'z' || ch < 'a'){
         if (ch != ' ' && ch != ','){
-            printf("incorrect input");
+            printf("incorrect input ");
             return 2;
         }
         else
@@ -264,72 +263,58 @@ int check_w(char w[]){
 
 void change_st_w(char st[], char w[]){
     int i = 0;
-    while (st[i] != '.'&& st[i] != '\0'){
-        if (st[i] == ',')
+    while (st[i] != '\0'){
+        if (st[i] == ',' || st[i] == '.')
             st[i] = ' ';
+        i++;
     }
-    i = analogue_strlen(w);
+    i = 0;
+    int j = 0;
 
+    while (st[i] != '\0') {
+        st[j] = st[i];
+        j ++;
+        if (st[i] == ' ') {
+            while (st[i + 1] == ' ') {
+                i++;
+            }
+        }
+        i++;
+    }
+    st[j] = '.';
+    st[j + 1] = '\0';
+    w[analogue_strlen(w)] = ' ';
 }
 
 
 int print_all_matching_words(char st[], const char w[]){
     int start_sl = 0, i = 0, f = 0, r_check = 0;
-    int len_w = analogue_strlen(w);
-    while (st[i] != '.'&& st[i] != '\0'){
+    while (st[i] != '.' && st[i] != '\0'){
         r_check = check_correctness_symbol(st[i]);
         if (r_check == 2)
             return 1;
         if (r_check == 0){
-
+            if (st[i] != w[i - start_sl])
+                f = 1;
         }
-    }
-    return 0;
-}
-
-
-/*int print_all_matching_words(char st[], const char w[]){
-    int start_sl = 0, i = 0, f = 0, r_check = 0;
-    int len_w = analogue_strlen(w);
-    while (st[i] != '.' && st[i] != '\0') {
-        r_check = check_correctness_symbol(st[i]);
-        if (r_check == 2)
-            return 1;
-
-        if (r_check == 0) {
-            if (f == 0) {
-                if (st[i] != w[i - start_sl])
-                    f = 1;
-            }
-        }
-
-        if (r_check == 1){
-            if (f == 0) {
-                if (start_sl - i < len_w){
-                    while (start_sl < i){
-                        printf("%c", st[start_sl]);
-                        start_sl ++;
-                    }
-                    printf("%c", ' ');
-                    f = 0;
-                }
-                start_sl = i + 1;
-            }
-            else{
+        else{
+            if (st[i] != w[i - start_sl])
+                f = 1;
+            if (f == 1){
                 while (start_sl < i){
                     printf("%c", st[start_sl]);
                     start_sl ++;
                 }
                 printf("%c", ' ');
                 f = 0;
-                start_sl = i + 1;
             }
+            start_sl = i + 1;
         }
         i ++;
     }
-
     return 0;
-}*/
+}
+
 
 
 
