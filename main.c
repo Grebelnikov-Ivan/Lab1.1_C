@@ -1,9 +1,9 @@
 #include <stdio.h>
 
 void lab1_1();
-char* creat_set(char st[]);
-char* del_same_ones(char st[], char ch, int start_i);
-char* compact_str_to_condition(char st1[], char st2[]);
+void creat_set(char st[]);
+void del_same_ones(char st[], char ch, int start_i);
+void compact_str_to_condition(char st1[], char st2[]);
 int analogue_strlen(const char st[]);
 
 
@@ -17,16 +17,17 @@ int do_check(const char st[], int len_st);
 
 int lab1_3();
 int check_correctness_symbol(char ch);
-int check_w(const char w[]);
-int print_all_matching_words(const char st[], const char w[]);
+int check_w(char w[]);
+void change_st_w(char st[], char w[]);
+int print_all_matching_words(char st[], const char w[]);
 
 
 int main() {
-    // lab1_1();
+    lab1_1();
 
     // lab1_2();
 
-    lab1_3();
+    // lab1_3();
 
     return 0;
 }
@@ -59,20 +60,20 @@ void lab1_1(){
     // char st1[1000] = "aaaaabbbbbcccccdddd";
     // char st2[1000] = "abc"; // dddd
 
-    char* result2 = compact_str_to_condition(st1, st2);
-    printf("rez: %s", result2);
+    compact_str_to_condition(st1, st2);
+    printf("rez: %s", st1);
 
 }
 
 
-char* creat_set(char st[]){
+void creat_set(char st[]){
     int i = 0;
     int len_st = analogue_strlen(st);
     while (i < len_st){
         int j = i + 1;
         while(j < len_st){
             if (st[i] == st[j]){
-                st = del_same_ones(st, st[i], j);
+                del_same_ones(st, st[i], j);
                 len_st = analogue_strlen(st);
                 break;
             }
@@ -83,11 +84,10 @@ char* creat_set(char st[]){
         }
         i++;
     }
-    return st;
 }
 
 
-char* del_same_ones(char st[], char ch, int start_i){
+void del_same_ones(char st[], char ch, int start_i){
     int i = start_i;
     int j = start_i;
 
@@ -100,11 +100,10 @@ char* del_same_ones(char st[], char ch, int start_i){
         i ++;
     }
     st[j] = '\0';
-    return st;
 }
 
-char* compact_str_to_condition(char st1[], char st2[]){
-    st2 = creat_set(st2);
+void compact_str_to_condition(char st1[], char st2[]){
+    creat_set(st2);
     int i = 0;
     int len_st1 = analogue_strlen(st1);
     while (i < len_st1){
@@ -112,7 +111,7 @@ char* compact_str_to_condition(char st1[], char st2[]){
         int len_st2 = analogue_strlen(st2);
         while(j < len_st2){
             if (st1[i] == st2[j]){
-                st1 = del_same_ones(st1, st1[i], i);
+                del_same_ones(st1, st1[i], i);
                 len_st1 = analogue_strlen(st1);
                 i--;
                 break;
@@ -123,7 +122,6 @@ char* compact_str_to_condition(char st1[], char st2[]){
         }
         i++;
     }
-    return st1;
 }
 
 
@@ -208,21 +206,18 @@ int do_check(const char st[], int len_st){
 }
 
 
-
-
-
 int lab1_3() {
-    // char st[1000] = " qwe   vqwe qw wq,qww .";
-    // char w[1000] = "qw";
+    char st[1000] = " qwe   vqwe qw wq,qww q.";
+    char w[1000] = "qw";
 
-    // char st[1000] = "as ad af.";
-    // char w[1000] = "am";
+    // char st[1000] = "as a fa a .";
+    // char w[1000] = "ammm";
 
-    // char st[1000] = "as ad af.";
-    // char w[1000] = "am";
+    // char st[1000] = "as ad af a .";
+    // char w[1000] = "a";
 
-    // char st[1000] = "as ad af.";
-    // char w[1000] = "am";
+    // char st[1000] = "as ad as .";
+    // char w[1000] = "asssss";
 
     // char st[1000] = "as ad af.";
     // char w[1000] = "am";
@@ -235,8 +230,9 @@ int lab1_3() {
 
     if (check_w(w) == 1)
         return 1;
+    change_st_w(st, w);
+    printf("%s", st);
     print_all_matching_words(st, w);
-
     return 0;
 }
 
@@ -248,12 +244,12 @@ int check_correctness_symbol(char ch){
             return 2;
         }
         else
-            return 1;
+            return 1; // ch == ' ' || ch == ','
     }
-    return 0;
+    return 0; // abc...z
 }
 
-int check_w(const char w[]){
+int check_w(char w[]){
     int i = 0;
     while (w[i] != '\0'){
         if (check_correctness_symbol(w[i]) != 0) {
@@ -266,8 +262,35 @@ int check_w(const char w[]){
 }
 
 
-int print_all_matching_words(const char st[], const char w[]){
+void change_st_w(char st[], char w[]){
+    int i = 0;
+    while (st[i] != '.'&& st[i] != '\0'){
+        if (st[i] == ',')
+            st[i] = ' ';
+    }
+    i = analogue_strlen(w);
+
+}
+
+
+int print_all_matching_words(char st[], const char w[]){
     int start_sl = 0, i = 0, f = 0, r_check = 0;
+    int len_w = analogue_strlen(w);
+    while (st[i] != '.'&& st[i] != '\0'){
+        r_check = check_correctness_symbol(st[i]);
+        if (r_check == 2)
+            return 1;
+        if (r_check == 0){
+
+        }
+    }
+    return 0;
+}
+
+
+/*int print_all_matching_words(char st[], const char w[]){
+    int start_sl = 0, i = 0, f = 0, r_check = 0;
+    int len_w = analogue_strlen(w);
     while (st[i] != '.' && st[i] != '\0') {
         r_check = check_correctness_symbol(st[i]);
         if (r_check == 2)
@@ -282,6 +305,14 @@ int print_all_matching_words(const char st[], const char w[]){
 
         if (r_check == 1){
             if (f == 0) {
+                if (start_sl - i < len_w){
+                    while (start_sl < i){
+                        printf("%c", st[start_sl]);
+                        start_sl ++;
+                    }
+                    printf("%c", ' ');
+                    f = 0;
+                }
                 start_sl = i + 1;
             }
             else{
@@ -297,14 +328,8 @@ int print_all_matching_words(const char st[], const char w[]){
         i ++;
     }
 
-    if (f != 0){
-        while (start_sl < i){
-            printf("%c", st[start_sl]);
-            start_sl ++;
-        }
-    }
     return 0;
-}
+}*/
 
 
 
