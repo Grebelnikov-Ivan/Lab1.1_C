@@ -27,7 +27,7 @@ int main() {
 
     // lab1_2();
 
-    lab1_3();
+    // lab1_3();
 
     return 0;
 }
@@ -207,8 +207,8 @@ int do_check(const char st[], int len_st){
 
 
 int lab1_3() {
-    // char st[1000] = "qwe   vqwe qw wq,qww q.";
-    // char w[1000] = "qw";
+    char st[1000] = "qwe   vqwe qw wq,qww q.";
+    char w[1000] = "qw";
 
     // char st[1000] = "as,a fa a.";
     // char w[1000] = "ammm";
