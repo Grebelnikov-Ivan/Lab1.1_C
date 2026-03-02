@@ -25,7 +25,7 @@ int print_all_matching_words(char st[], const char w[]);
 int main() {
     // lab1_1();
 
-    // lab1_2();
+    lab1_2();
 
     // lab1_3();
 
@@ -140,6 +140,7 @@ void lab1_2(){
     // char st1[1000] = "n";
     // char st1[1000] = "n4";
     // char st1[1000] = "14";
+    // char st1[1000] = "-3468932";
     int len_st = analogue_strlen(st1);
     do_check(st1, len_st);
 }
@@ -166,6 +167,8 @@ int parity_check(const char st[], int len_st){
 int only_numbers(const char st[], int len_st){
     for (int i = 0; i < len_st; i++) {
         if (st[i] < '0' || st[i] > '9') {
+            if (st[i] == '-' && i == 0 && st != "-")
+                return 0;
             return 1;
         }
     }
@@ -314,6 +317,7 @@ int print_all_matching_words(char st[], const char w[]){
     }
     return 0;
 }
+
 
 
 
