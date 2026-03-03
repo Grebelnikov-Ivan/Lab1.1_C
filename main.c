@@ -18,16 +18,15 @@ int do_check(const char st[], int len_st);
 int lab1_3();
 int check_correctness_symbol(char ch);
 int check_w(char w[]);
-// void change_st_w(char st[], char w[]);
 int print_all_matching_words(char st[], const char w[]);
 
 
 int main() {
-    // lab1_1();
+    lab1_1();
 
     // lab1_2();
 
-    lab1_3();
+    // lab1_3();
 
     return 0;
 }
@@ -66,7 +65,7 @@ void lab1_1(){
 }
 
 
-void creat_set(char st[]){
+void creat_set(char st[]){  // *st st[]
     int i = 0;
     int len_st = analogue_strlen(st);
     while (i < len_st){
@@ -167,9 +166,8 @@ int parity_check(const char st[], int len_st){
 int only_numbers(const char st[], int len_st){
     for (int i = 0; i < len_st; i++) {
         if (st[i] < '0' || st[i] > '9') {
-            if (st[i] == '-' && i == 0 && len_st != 1)
-                return 0;
-            return 1;
+            if (!(st[i] == '-' && i == 0)) //  len_st != 1
+                return 1;
         }
     }
     return 0;
@@ -210,17 +208,17 @@ int do_check(const char st[], int len_st){
 
 
 int lab1_3() {
-    char st[1000] = "qwe   vqwe qw wq,qww q.";
-    char w[1000] = "qw";
+    // char st[1000] = "qwe   vqwe qw wq,qww q.";
+    // char w[1000] = "qw";
 
-    // char st[1000] = "qwe   Aqwe qw wq,qww q.";
+    // char st[1000] = "qwe   Дqwe qw wq,qww q.";
     // char w[1000] = "qw";
 
     // char st[1000] = "qwe   vqwe qw wq,qww q.";
     // char w[1000] = "яw";
 
-    // char st[1000] = "as,a fa a.";
-    // char w[1000] = "ammm";
+    char st[1000] = "as,a fa a.";
+    char w[1000] = "ammz";
 
     // char st[1000] = "as ad af a .";
     // char w[1000] = "a";
@@ -247,9 +245,10 @@ int lab1_3() {
 
 int check_correctness_symbol(char ch){
     unsigned char uc = (unsigned char)ch;
-    if (!(ch > 'a' && ch < 'z')){
+    if (!(ch >= 'a' && ch <= 'z')){
         if (ch != ' ' && ch != ','){
             if (uc > 127)
+                printf("%c", ch);
                 printf("There is no answer because it can be significantly changed due to some of the characters entered.");
             printf("incorrect input ");
             return 2;
@@ -305,5 +304,3 @@ int print_all_matching_words(char st[], const char w[]){
     }
     return 0;
 }
-
-
