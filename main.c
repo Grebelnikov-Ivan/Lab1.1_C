@@ -2,6 +2,7 @@
 
 void lab1_1();
 void creat_set(char st[]);
+int check_correctness_st(char st[]);
 void del_same_ones(char st[], char ch, int start_i);
 void compact_str_to_condition(char st1[], char st2[]);
 int analogue_strlen(const char st[]);
@@ -58,10 +59,25 @@ void lab1_1(){
 
     // char st1[1000] = "aaaaabbbbbcccccdddd";
     // char st2[1000] = "abc"; // dddd
-
+    check_correctness_st(st1);
+    check_correctness_st(st2);
     compact_str_to_condition(st1, st2);
     printf("rez: %s", st1);
 
+}
+
+
+int check_correctness_st(char st[]){
+    int i = 0;
+    while (st[i] != '\0'){
+        unsigned char uc = (unsigned char)st[i];
+        if (uc > 127) {
+            printf("There is no answer because it can be significantly changed due to some of the characters entered.");
+            return 1;
+        }
+        i ++;
+    }
+    return 0;
 }
 
 
@@ -248,7 +264,6 @@ int check_correctness_symbol(char ch){
     if (!(ch >= 'a' && ch <= 'z')){
         if (ch != ' ' && ch != ','){
             if (uc > 127)
-                printf("%c", ch);
                 printf("There is no answer because it can be significantly changed due to some of the characters entered.");
             printf("incorrect input ");
             return 2;
