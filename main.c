@@ -2,7 +2,7 @@
 
 void lab1_1();
 void creat_set(char st[]);
-int check_correctness_st(char st[]);
+int check_correctness_st(const char st[]);
 void del_same_ones(char st[], char ch, int start_i);
 void compact_str_to_condition(char st1[], char st2[]);
 int analogue_strlen(const char st[]);
@@ -67,7 +67,11 @@ void lab1_1(){
 }
 
 
-int check_correctness_st(char st[]){
+int check_correctness_st(const char st[]){
+    if (st == NULL) {
+        printf("NULL Pointer Passed");
+        return 1;
+    }
     int i = 0;
     while (st[i] != '\0'){
         unsigned char uc = (unsigned char)st[i];
