@@ -1,10 +1,10 @@
 #include <stdio.h>
+#include <wchar.h>
+#include <string.h>
 
 void lab1_1();
-void creat_set(char st[]);
 int check_correctness_st(const char st[]);
-void del_same_ones(char st[], char ch, int start_i);
-void compact_str_to_condition(char st1[], char st2[]);
+int compact_str_to_condition(char st1[], char st2[]);
 int analogue_strlen(const char st[]);
 
 
@@ -59,90 +59,66 @@ void lab1_1(){
 
     // char st1[1000] = "aaaaabbbbbcccccdddd";
     // char st2[1000] = "abc"; // dddd
-    check_correctness_st(st1);
-    check_correctness_st(st2);
-    compact_str_to_condition(st1, st2);
-    printf("rez: %s", st1);
+    if (compact_str_to_condition(st1, st2) == 1)
+        printf("error");
+    else
+        printf("rez: %s", st1);
 
 }
 
 
 int check_correctness_st(const char st[]){
     if (st == NULL) {
-        printf("NULL Pointer Passed");
         return 1;
     }
     int i = 0;
+    if (st[0] == '\0')
+        return 1;
+    if (st[strlen(st) - 1] != '\0')
+        return 0;
+
+    //printf("%d", bf);
+    //printf("%d", analogue_strlen(st));
+    //if (analogue_strlen(st) >= bf)
+      //  return 1;
     while (st[i] != '\0'){
         unsigned char uc = (unsigned char)st[i];
-        if (uc > 127) {
-            printf("There is no answer because it can be significantly changed due to some of the characters entered.");
+        if (uc > 127)
             return 1;
-        }
         i ++;
     }
     return 0;
 }
 
-
-void creat_set(char st[]){  // *st st[]
+int compact_str_to_condition(char st1[], char st2[]) {
+    if (check_correctness_st(st1) == 1)
+        return 1;
+    if (check_correctness_st(st2) == 1)
+        return 1;
+    int flags[256] = {0}; // характеристический массив
     int i = 0;
-    int len_st = analogue_strlen(st);
-    while (i < len_st){
-        int j = i + 1;
-        while(j < len_st){
-            if (st[i] == st[j]){
-                del_same_ones(st, st[i], j);
-                len_st = analogue_strlen(st);
-                break;
-            }
-            else{
-                j++;
-            }
 
-        }
+    while (st2[i] != '\0') {
+        unsigned codech = (unsigned char) st2[i];  // получаем ASCII код
+        flags[codech] = 1;
         i++;
     }
-}
+    i = 0;
+    int j = 0;
 
+    while (st1[i] != '\0') {
+        unsigned codech = (unsigned char) st1[i];
 
-void del_same_ones(char st[], char ch, int start_i){
-    int i = start_i;
-    int j = start_i;
-
-    int len_st = analogue_strlen(st);
-    while (i < len_st){
-        if (st[i] != ch) {
-            st[j] = st[i];
-            j ++;
+        if (flags[codech] == 0) {
+            st1[j] = st1[i];
+            j++;
         }
-        i ++;
-    }
-    st[j] = '\0';
-}
 
-void compact_str_to_condition(char st1[], char st2[]){
-    creat_set(st2);
-    int i = 0;
-    int len_st1 = analogue_strlen(st1);
-    while (i < len_st1){
-        int j = 0;
-        int len_st2 = analogue_strlen(st2);
-        while(j < len_st2){
-            if (st1[i] == st2[j]){
-                del_same_ones(st1, st1[i], i);
-                len_st1 = analogue_strlen(st1);
-                i--;
-                break;
-            }
-            else{
-                j++;
-            }
-        }
         i++;
     }
+    st1[j] = '\0';
+    return 0;
 }
-
 
 int analogue_strlen(const char st[]){
     int len = 0;
@@ -150,7 +126,6 @@ int analogue_strlen(const char st[]){
         len ++;
     return len;
 }
-
 
 void lab1_2(){
     char st1[1000] = "3468932";
