@@ -34,8 +34,8 @@ int main() {
 
 
 void lab1_1(){
-    char st1[1000] = "abcdefghij";
-    char st2[1000] = "acegi"; // bdfhj
+    // char st1[1000] = "abcdefghij";
+    // char st2[1000] = "acegi"; // bdfhj
 
     // char st1[1000] = "Sfdsm";
     // char st2[1000] = ""; // Sfdsm
@@ -72,28 +72,21 @@ int check_correctness_st(const char st[]){
         return 1;
     }
     int i = 0;
-    if (st[0] == '\0')
-        return 1;
-    if (st[strlen(st) - 1] != '\0')
-        return 0;
-
-    //printf("%d", bf);
-    //printf("%d", analogue_strlen(st));
-    //if (analogue_strlen(st) >= bf)
-      //  return 1;
+    if (st[strlen(st)] != '\0')
+        return 3;
     while (st[i] != '\0'){
         unsigned char uc = (unsigned char)st[i];
         if (uc > 127)
-            return 1;
+            return 4;
         i ++;
     }
     return 0;
 }
 
 int compact_str_to_condition(char st1[], char st2[]) {
-    if (check_correctness_st(st1) == 1)
+    if (check_correctness_st(st1) != 0)
         return 1;
-    if (check_correctness_st(st2) == 1)
+    if (check_correctness_st(st2) != 0)
         return 1;
     int flags[256] = {0}; // характеристический массив
     int i = 0;
@@ -113,12 +106,12 @@ int compact_str_to_condition(char st1[], char st2[]) {
             st1[j] = st1[i];
             j++;
         }
-
         i++;
     }
     st1[j] = '\0';
     return 0;
 }
+
 
 int analogue_strlen(const char st[]){
     int len = 0;
@@ -126,6 +119,7 @@ int analogue_strlen(const char st[]){
         len ++;
     return len;
 }
+
 
 void lab1_2(){
     char st1[1000] = "3468932";
