@@ -13,7 +13,8 @@ int parity_check(const char st[], int len_st);
 int not_empty(int len_st);
 int only_numbers(const char st[], int len_st);
 int divisible_4(const char st[], int len_st);
-int do_check(const char st[], int len_st);
+int do_check(const char st[]);
+int check(char st[]);
 
 
 int lab1_3();
@@ -23,9 +24,9 @@ int print_all_matching_words(char st[], const char w[]);
 
 
 int main() {
-    lab1_1();
+    // lab1_1();
 
-    // lab1_2();
+    lab1_2();
 
     // lab1_3();
 
@@ -34,8 +35,8 @@ int main() {
 
 
 void lab1_1(){
-    // char st1[1000] = "abcdefghij";
-    // char st2[1000] = "acegi"; // bdfhj
+    char st1[1000] = "abcdefghij";
+    char st2[1000] = "acegi"; // bdfhj
 
     // char st1[1000] = "Sfdsm";
     // char st2[1000] = ""; // Sfdsm
@@ -59,6 +60,10 @@ void lab1_1(){
 
     // char st1[1000] = "aaaaabbbbbcccccdddd";
     // char st2[1000] = "abc"; // dddd
+
+    // char st1[1000] = "abc丝defghij";
+    // char st2[1000] = "acegi"; 
+
     if (compact_str_to_condition(st1, st2) == 1)
         printf("error");
     else
@@ -129,11 +134,25 @@ void lab1_2(){
     // char st1[1000] = "n4";
     // char st1[1000] = "14";
     // char st1[1000] = "-3468932";
-    int len_st = analogue_strlen(st1);
-    do_check(st1, len_st);
+    // char st1[1000] = "346丝8932";
+    do_check(st1);
 }
 
-
+int check(char st[]){
+    if (st == NULL) {
+        return 1;
+    }
+    int i = 0;
+    if (st[strlen(st)] != '\0')
+        return 1;
+    while (st[i] != '\0'){
+        unsigned char uc = (unsigned char)st[i];
+        if (uc > 127)
+            return 1;
+        i ++;
+    }
+    return 0;
+}
 
 int not_empty(int len_st){
     if (len_st == 0)
@@ -173,7 +192,12 @@ int divisible_4(const char st[], int len_st){
     return 1;
 }
 
-int do_check(const char st[], int len_st){
+int do_check(const char st[]){
+    if (check(st) != 0){
+        printf("error");
+        return 1;
+    }
+    int len_st = analogue_strlen(st);
     if (not_empty(len_st) != 0){
         printf("the line is empty");
         return 1;
