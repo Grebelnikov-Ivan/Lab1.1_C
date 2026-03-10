@@ -13,7 +13,8 @@ int parity_check(const char st[], int len_st);
 int not_empty(int len_st);
 int only_numbers(const char st[], int len_st);
 int divisible_4(const char st[], int len_st);
-int do_check(const char st[], int len_st);
+int do_check(const char st[]);
+int check(char st[]);
 
 
 int lab1_3();
@@ -23,11 +24,11 @@ int print_all_matching_words(char st[], const char w[]);
 
 
 int main() {
-    lab1_1();
+    // lab1_1();
 
     // lab1_2();
 
-    // lab1_3();
+    lab1_3();
 
     return 0;
 }
@@ -59,6 +60,10 @@ void lab1_1(){
 
     // char st1[1000] = "aaaaabbbbbcccccdddd";
     // char st2[1000] = "abc"; // dddd
+
+    // char st1[1000] = "abc丝defghij";
+    // char st2[1000] = "acegi";
+
     if (compact_str_to_condition(st1, st2) == 1)
         printf("error");
     else
@@ -72,28 +77,21 @@ int check_correctness_st(const char st[]){
         return 1;
     }
     int i = 0;
-    if (st[0] == '\0')
-        return 1;
-    if (st[strlen(st) - 1] != '\0')
-        return 0;
-
-    //printf("%d", bf);
-    //printf("%d", analogue_strlen(st));
-    //if (analogue_strlen(st) >= bf)
-      //  return 1;
+    if (st[strlen(st)] != '\0')
+        return 3;
     while (st[i] != '\0'){
         unsigned char uc = (unsigned char)st[i];
         if (uc > 127)
-            return 1;
+            return 4;
         i ++;
     }
     return 0;
 }
 
 int compact_str_to_condition(char st1[], char st2[]) {
-    if (check_correctness_st(st1) == 1)
+    if (check_correctness_st(st1) != 0)
         return 1;
-    if (check_correctness_st(st2) == 1)
+    if (check_correctness_st(st2) != 0)
         return 1;
     int flags[256] = {0}; // характеристический массив
     int i = 0;
@@ -113,12 +111,12 @@ int compact_str_to_condition(char st1[], char st2[]) {
             st1[j] = st1[i];
             j++;
         }
-
         i++;
     }
     st1[j] = '\0';
     return 0;
 }
+
 
 int analogue_strlen(const char st[]){
     int len = 0;
@@ -126,6 +124,7 @@ int analogue_strlen(const char st[]){
         len ++;
     return len;
 }
+
 
 void lab1_2(){
     char st1[1000] = "3468932";
@@ -135,11 +134,25 @@ void lab1_2(){
     // char st1[1000] = "n4";
     // char st1[1000] = "14";
     // char st1[1000] = "-3468932";
-    int len_st = analogue_strlen(st1);
-    do_check(st1, len_st);
+    // char st1[1000] = "346丝8932";
+    do_check(st1);
 }
 
-
+int check(char st[]){
+    if (st == NULL) {
+        return 1;
+    }
+    int i = 0;
+    if (st[strlen(st)] != '\0')
+        return 1;
+    while (st[i] != '\0'){
+        unsigned char uc = (unsigned char)st[i];
+        if (uc > 127)
+            return 1;
+        i ++;
+    }
+    return 0;
+}
 
 int not_empty(int len_st){
     if (len_st == 0)
@@ -179,7 +192,12 @@ int divisible_4(const char st[], int len_st){
     return 1;
 }
 
-int do_check(const char st[], int len_st){
+int do_check(const char st[]){
+    if (check(st) != 0){
+        printf("error");
+        return 1;
+    }
+    int len_st = analogue_strlen(st);
     if (not_empty(len_st) != 0){
         printf("the line is empty");
         return 1;
@@ -203,8 +221,8 @@ int do_check(const char st[], int len_st){
 
 
 int lab1_3() {
-    // char st[1000] = "qwe   vqwe qw wq,qww q.";
-    // char w[1000] = "qw";
+    char st[1000] = "qwe   vqwe qw wq,qww q.";
+    char w[1000] = "qw";
 
     // char st[1000] = "qwe   Дqwe qw wq,qww q.";
     // char w[1000] = "qw";
@@ -212,8 +230,8 @@ int lab1_3() {
     // char st[1000] = "qwe   vqwe qw wq,qww q.";
     // char w[1000] = "яw";
 
-    char st[1000] = "as,a fa a.";
-    char w[1000] = "ammz";
+    // char st[1000] = "as,a fa a.";
+    // char w[1000] = "ammz";
 
     // char st[1000] = "as ad af a .";
     // char w[1000] = "a";
@@ -229,11 +247,15 @@ int lab1_3() {
 
     // char st[1000] = "DSdas ad af.";
     // char w[1000] = "am";
-
+    if (check(st) != 0)
+        return 1;
+    if (check(w) != 0)
+        return 1;
     if (check_w(w) == 1)
         return 1;
     // change_st_w(st, w);
-    print_all_matching_words(st, w);
+    if (print_all_matching_words(st, w) != 0)
+        printf("error");
     return 0;
 }
 
@@ -243,8 +265,7 @@ int check_correctness_symbol(char ch){
     if (!(ch >= 'a' && ch <= 'z')){
         if (ch != ' ' && ch != ','){
             if (uc > 127)
-                printf("There is no answer because it can be significantly changed due to some of the characters entered.");
-            printf("incorrect input ");
+                return 3;
             return 2;
         }
         else
@@ -257,7 +278,6 @@ int check_w(char w[]){
     int i = 0;
     while (w[i] != '\0'){
         if (check_correctness_symbol(w[i]) != 0) {
-            printf("the string W was entered incorrectly");
             return 1;
         }
         i ++;
@@ -271,7 +291,7 @@ int print_all_matching_words(char st[], const char w[]){
     int len_w = analogue_strlen(w);
     while (st[i] != '.' && st[i] != '\0'){
         r_check = check_correctness_symbol(st[i]);
-        if (r_check == 2)
+        if (r_check >= 2)
             return 1;
         if (r_check == 0){
             if (st[i] != w[i - start_sl])
