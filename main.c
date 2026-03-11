@@ -1,6 +1,6 @@
 #include <stdio.h>
-#include <wchar.h>
 #include <string.h>
+#include <time.h>
 
 void lab1_1();
 int check_correctness_st(const char st[]);
@@ -13,7 +13,7 @@ int parity_check(const char st[], int len_st);
 int not_empty(int len_st);
 int only_numbers(const char st[], int len_st);
 int divisible_4(const char st[], int len_st);
-int do_check(const char st[]);
+int do_check(char st[]);
 int check(char st[]);
 
 
@@ -24,19 +24,25 @@ int print_all_matching_words(char st[], const char w[]);
 
 
 int main() {
-    // lab1_1();
+    lab1_1();
 
     // lab1_2();
 
-    lab1_3();
+    // lab1_3();
 
     return 0;
 }
 
 
 void lab1_1(){
-    char st1[1000] = "abcdefghij";
-    char st2[1000] = "acegi"; // bdfhj
+    char *st1 = NULL;
+    char st11[1000] = "abcdefghij";
+    st1 = st11;
+    char *st2 = NULL;
+    char st22[1000] = "acegi";
+    st2 = st22;
+    // char st1[1000] = "abcdefghij";
+    // char st2[1000] = "acegi"; // bdfhj
 
     // char st1[1000] = "Sfdsm";
     // char st2[1000] = ""; // Sfdsm
@@ -63,12 +69,14 @@ void lab1_1(){
 
     // char st1[1000] = "abc丝defghij";
     // char st2[1000] = "acegi";
-
+    clock_t start = clock();
     if (compact_str_to_condition(st1, st2) == 1)
         printf("error");
     else
         printf("rez: %s", st1);
-
+    clock_t end = clock();
+    double time_spent = (double)(end - start) / CLOCKS_PER_SEC;
+    printf("    time: %.12f\n", time_spent);
 }
 
 
@@ -127,7 +135,10 @@ int analogue_strlen(const char st[]){
 
 
 void lab1_2(){
-    char st1[1000] = "3468932";
+    char *st1 = NULL;
+    char st11[1000] = "3468932";
+    st1 = st11;
+    // char st1[1000] = "3468932";
     // char st1[1000] = "";
     // char st1[1000] = "3";
     // char st1[1000] = "n";
@@ -162,6 +173,9 @@ int not_empty(int len_st){
 
 
 int parity_check(const char st[], int len_st){
+    if (st == NULL) {
+        return 1;
+    }
     char st2[6] = "02468";
     for (int i = 0; i < 5; i ++){
         if (st[len_st - 1] == st2[i]){
@@ -172,6 +186,9 @@ int parity_check(const char st[], int len_st){
 }
 
 int only_numbers(const char st[], int len_st){
+    if (st == NULL) {
+        return 1;
+    }
     for (int i = 0; i < len_st; i++) {
         if (st[i] < '0' || st[i] > '9') {
             if (!(st[i] == '-' && i == 0)) //  len_st != 1
@@ -182,6 +199,9 @@ int only_numbers(const char st[], int len_st){
 }
 
 int divisible_4(const char st[], int len_st){
+    if (st == NULL) {
+        return 1;
+    }
     if (len_st == 1){
         if ((st[0] - '0') % 4 == 0)
             return 1;
@@ -192,7 +212,7 @@ int divisible_4(const char st[], int len_st){
     return 1;
 }
 
-int do_check(const char st[]){
+int do_check(char st[]){
     if (check(st) != 0){
         printf("error");
         return 1;
@@ -221,8 +241,15 @@ int do_check(const char st[]){
 
 
 int lab1_3() {
-    char st[1000] = "qwe   vqwe qw wq,qww q.";
-    char w[1000] = "qw";
+    char *st = NULL;
+    char st11[1000] = "qwe   vqwe qw wq,qww q.";
+    st = st11;
+
+    char *w = NULL;
+    char ww[1000] = "qw";
+    w = ww;
+    // char st[1000] = "qwe   vqwe qw wq,qww q.";
+    // char w[1000] = "qw";
 
     // char st[1000] = "qwe   Дqwe qw wq,qww q.";
     // char w[1000] = "qw";
