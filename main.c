@@ -1,34 +1,34 @@
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
+#include <errno.h>
+#include <stdlib.h>
 
 void lab1_1();
-int check_correctness_st(const char st[]);
+int check_correctness_ASCII(char st[]);
 int compact_str_to_condition(char st1[], char st2[]);
 int analogue_strlen(const char st[]);
 
 
 void lab1_2();
-int parity_check(const char st[], int len_st);
 int not_empty(int len_st);
 int only_numbers(const char st[], int len_st);
-int divisible_4(const char st[], int len_st);
-int do_check(char st[]);
-int check(char st[]);
+int check_divisible_n(const char st[], int n);
+int do_check(char st[], int n);
 
 
 int lab1_3();
 int check_correctness_symbol(char ch);
-int check_w(char w[]);
+// int check_w(char w[]);
 int print_all_matching_words(char st[], const char w[]);
 
 
 int main() {
-    lab1_1();
+    // lab1_1();
 
     // lab1_2();
 
-    // lab1_3();
+    lab1_3();
 
     return 0;
 }
@@ -80,7 +80,7 @@ void lab1_1(){
 }
 
 
-int check_correctness_st(const char st[]){
+int check_correctness_ASCII(char st[]){
     if (st == NULL) {
         return 1;
     }
@@ -97,9 +97,9 @@ int check_correctness_st(const char st[]){
 }
 
 int compact_str_to_condition(char st1[], char st2[]) {
-    if (check_correctness_st(st1) != 0)
+    if (check_correctness_ASCII(st1) != 0)
         return 1;
-    if (check_correctness_st(st2) != 0)
+    if (check_correctness_ASCII(st2) != 0)
         return 1;
     int flags[256] = {0}; // характеристический массив
     int i = 0;
@@ -138,6 +138,7 @@ void lab1_2(){
     char *st1 = NULL;
     char st11[1000] = "3468932";
     st1 = st11;
+    int n = 4;
     // char st1[1000] = "3468932";
     // char st1[1000] = "";
     // char st1[1000] = "3";
@@ -146,23 +147,7 @@ void lab1_2(){
     // char st1[1000] = "14";
     // char st1[1000] = "-3468932";
     // char st1[1000] = "346丝8932";
-    do_check(st1);
-}
-
-int check(char st[]){
-    if (st == NULL) {
-        return 1;
-    }
-    int i = 0;
-    if (st[strlen(st)] != '\0')
-        return 1;
-    while (st[i] != '\0'){
-        unsigned char uc = (unsigned char)st[i];
-        if (uc > 127)
-            return 1;
-        i ++;
-    }
-    return 0;
+    do_check(st1, n);
 }
 
 int not_empty(int len_st){
@@ -171,19 +156,6 @@ int not_empty(int len_st){
     return 0;
 }
 
-
-int parity_check(const char st[], int len_st){
-    if (st == NULL) {
-        return 1;
-    }
-    char st2[6] = "02468";
-    for (int i = 0; i < 5; i ++){
-        if (st[len_st - 1] == st2[i]){
-            return 0;
-        }
-    }
-    return 1;
-}
 
 int only_numbers(const char st[], int len_st){
     if (st == NULL) {
@@ -198,22 +170,29 @@ int only_numbers(const char st[], int len_st){
     return 0;
 }
 
-int divisible_4(const char st[], int len_st){
+int check_divisible_n(const char st[], int n){
     if (st == NULL) {
         return 1;
     }
-    if (len_st == 1){
+    errno = 0;
+    long result = strtol(st, NULL, 10);
+
+    if (errno == ERANGE)
+        return 1;
+    /*if (len_st == 1){
         if ((st[0] - '0') % 4 == 0)
             return 1;
     }
 
     if ((st[len_st - 1] - '0' + (st[len_st - 2] - '0') * 10) % 4 == 0)
+        return 0;*/
+    if (result % n == 0)
         return 0;
     return 1;
 }
 
-int do_check(char st[]){
-    if (check(st) != 0){
+int do_check(char st[], int n){
+    if (check_correctness_ASCII(st) != 0){
         printf("error");
         return 1;
     }
@@ -222,20 +201,17 @@ int do_check(char st[]){
         printf("the line is empty");
         return 1;
     }
-    if (parity_check(st, len_st) != 0) {
-        printf("it is not an even or decimal number, meaning it is not divisible by 4");
-        return 1;
-    }
 
     if (only_numbers(st, len_st) != 0) {
         printf("the string is not just numbers");
         return 1;
     }
 
-    if (divisible_4(st, len_st) != 0)
-        printf("the number is not divisible by 4");
+    int r = check_divisible_n(st, n) != 0;
+    if (r == 1)
+        printf("the number is not divisible");
     else
-        printf("the number is divisible by 4");
+        printf("the number is divisible");
     return 0;
 }
 
@@ -274,11 +250,9 @@ int lab1_3() {
 
     // char st[1000] = "DSdas ad af.";
     // char w[1000] = "am";
-    if (check(st) != 0)
+    if (check_correctness_ASCII(st) != 0)
         return 1;
-    if (check(w) != 0)
-        return 1;
-    if (check_w(w) == 1)
+    if (check_correctness_ASCII(w) != 0)
         return 1;
     // change_st_w(st, w);
     if (print_all_matching_words(st, w) != 0)
@@ -301,7 +275,7 @@ int check_correctness_symbol(char ch){
     return 0; // abc...z
 }
 
-int check_w(char w[]){
+/*int check_w(char w[]){
     int i = 0;
     while (w[i] != '\0'){
         if (check_correctness_symbol(w[i]) != 0) {
@@ -310,8 +284,8 @@ int check_w(char w[]){
         i ++;
     }
     return 0;
-}
-
+}*/
+// нужно создать массив
 
 int print_all_matching_words(char st[], const char w[]){
     int start_sl = 0, i = 0, f = 0, r_check = 0;
@@ -326,6 +300,7 @@ int print_all_matching_words(char st[], const char w[]){
         }
         else{
             if (f == 1 || i - start_sl != len_w && i - start_sl != 0){
+                //
                 while (start_sl < i){
                     printf("%c", st[start_sl]);
                     start_sl ++;
