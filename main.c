@@ -20,7 +20,7 @@ int do_check(char st[], int n);
 int lab1_3();
 int check_correctness_symbol(char ch);
 // int check_w(char w[]);
-int print_all_matching_words(char st[], const char w[]);
+int print_all_matching_words(char st[], const char w[], int result[]);
 
 
 int main() {
@@ -224,6 +224,10 @@ int lab1_3() {
     char *w = NULL;
     char ww[1000] = "qw";
     w = ww;
+
+    int *result = NULL;
+    int r[1000] = {0};
+    result = r;
     // char st[1000] = "qwe   vqwe qw wq,qww q.";
     // char w[1000] = "qw";
 
@@ -255,8 +259,21 @@ int lab1_3() {
     if (check_correctness_ASCII(w) != 0)
         return 1;
     // change_st_w(st, w);
-    if (print_all_matching_words(st, w) != 0)
-        printf("error");
+    if (print_all_matching_words(st, w, result) == 1)
+        return 1;
+    else {
+        int i = 0;
+        while (result[i] != -1) {
+            int j = result[i];
+            while (j < result[i + 1]) {
+                printf("%c", st[j]);
+                j++;
+            }
+            printf(" ");
+            i += 2;
+        }
+    }
+
     return 0;
 }
 
@@ -286,10 +303,13 @@ int check_correctness_symbol(char ch){
     return 0;
 }*/
 // нужно создать массив
+// вывести слова используя массив и функуцию print_all_matching_words
 
-int print_all_matching_words(char st[], const char w[]){
+int print_all_matching_words(char st[], const char w[], int result[]){
     int start_sl = 0, i = 0, f = 0, r_check = 0;
     int len_w = analogue_strlen(w);
+    int ri = 0;
+
     while (st[i] != '.' && st[i] != '\0'){
         r_check = check_correctness_symbol(st[i]);
         if (r_check >= 2)
@@ -299,24 +319,34 @@ int print_all_matching_words(char st[], const char w[]){
                 f = 1;
         }
         else{
-            if (f == 1 || i - start_sl != len_w && i - start_sl != 0){
-                //
-                while (start_sl < i){
+            if (f == 1 || (i - start_sl != len_w && i - start_sl != 0)){
+                result[ri] = start_sl;
+                ri++;
+                result[ri] = i;
+                ri++;
+            }
+            start_sl = i + 1;
+            f = 0;
+                /*while (start_sl < i){
                     printf("%c", st[start_sl]);
                     start_sl ++;
                 }
                 printf("%c", ' ');
-                f = 0;
-            }
-            start_sl = i + 1;
+                f = 0;*/
         }
         i ++;
     }
-    if (f == 1 || i - start_sl != len_w && i - start_sl != 0){
-        while (start_sl < i) {
+    if (f == 1 || (i - start_sl != len_w && i - start_sl != 0)){
+        // сохраняем в массив индекс начала слова и индекс конца слова
+        result[ri] = start_sl;
+        ri++;
+        result[ri] = i;
+        ri++;
+        /*while (start_sl < i) {
             printf("%c", st[start_sl]);
             start_sl ++;
-        }
+        }*/
     }
+    result[ri] = -1;
     return 0;
 }
