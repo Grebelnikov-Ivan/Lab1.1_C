@@ -19,7 +19,7 @@ int do_check(char st[], int n);
 
 int lab1_3();
 int check_correctness_symbol(char ch);
-// int check_w(char w[]);
+int check_w(char w[]);
 int print_all_matching_words(char st[], const char w[], int result[]);
 
 
@@ -240,7 +240,7 @@ int lab1_3() {
     // char st[1000] = "as,a fa a.";
     // char w[1000] = "ammz";
 
-    // char st[1000] = "as ad af a .";
+    // char st[1000] = "as da af a .";
     // char w[1000] = "a";
 
     // char st[1000] = "as ad as .";
@@ -254,36 +254,34 @@ int lab1_3() {
 
     // char st[1000] = "DSdas ad af.";
     // char w[1000] = "am";
-    if (check_correctness_ASCII(st) != 0)
+
+    if (check_correctness_ASCII(st) != 0) {
+        printf("error");
         return 1;
-    if (check_correctness_ASCII(w) != 0)
+    }
+    if (check_correctness_ASCII(w) != 0) {
+        printf("error");
         return 1;
-    // change_st_w(st, w);
-    if (print_all_matching_words(st, w, result) == 1)
+    }
+    if (print_all_matching_words(st, w, result) == 1) {
+        printf("error2");
         return 1;
+    }
     else {
         int i = 0;
         while (result[i] != -1) {
-            int j = result[i];
-            while (j < result[i + 1]) {
-                printf("%c", st[j]);
-                j++;
-            }
-            printf(" ");
+            printf("%.*s ", result[i + 1], &st[result[i]]);
             i += 2;
         }
     }
-
     return 0;
 }
 
 
 int check_correctness_symbol(char ch){
-    unsigned char uc = (unsigned char)ch;
-    if (!(ch >= 'a' && ch <= 'z')){
-        if (ch != ' ' && ch != ','){
-            if (uc > 127)
-                return 3;
+    unsigned char c = (unsigned char)ch;
+    if (!(c >= 'a' && c <= 'z')){
+        if (c != ' ' && c != ','){
             return 2;
         }
         else
@@ -292,18 +290,6 @@ int check_correctness_symbol(char ch){
     return 0; // abc...z
 }
 
-/*int check_w(char w[]){
-    int i = 0;
-    while (w[i] != '\0'){
-        if (check_correctness_symbol(w[i]) != 0) {
-            return 1;
-        }
-        i ++;
-    }
-    return 0;
-}*/
-// нужно создать массив
-// вывести слова используя массив и функуцию print_all_matching_words
 
 int print_all_matching_words(char st[], const char w[], int result[]){
     int start_sl = 0, i = 0, f = 0, r_check = 0;
@@ -319,33 +305,23 @@ int print_all_matching_words(char st[], const char w[], int result[]){
                 f = 1;
         }
         else{
-            if (f == 1 || (i - start_sl != len_w && i - start_sl != 0)){
+            if (i > start_sl && (f == 1 || (i - start_sl != len_w))){
                 result[ri] = start_sl;
                 ri++;
-                result[ri] = i;
+                result[ri] = i - start_sl; // длина
                 ri++;
             }
             start_sl = i + 1;
             f = 0;
-                /*while (start_sl < i){
-                    printf("%c", st[start_sl]);
-                    start_sl ++;
-                }
-                printf("%c", ' ');
-                f = 0;*/
         }
         i ++;
     }
-    if (f == 1 || (i - start_sl != len_w && i - start_sl != 0)){
+    if (i > start_sl && (f == 1 || (i - start_sl != len_w))){
         // сохраняем в массив индекс начала слова и индекс конца слова
         result[ri] = start_sl;
         ri++;
-        result[ri] = i;
+        result[ri] = i - start_sl;
         ri++;
-        /*while (start_sl < i) {
-            printf("%c", st[start_sl]);
-            start_sl ++;
-        }*/
     }
     result[ri] = -1;
     return 0;
