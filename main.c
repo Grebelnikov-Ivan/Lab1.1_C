@@ -26,9 +26,9 @@ int print_all_matching_words(char st[], const char w[], int result[]);
 int main() {
     // lab1_1();
 
-    // lab1_2();
+    lab1_2();
 
-    lab1_3();
+    // lab1_3();
 
     return 0;
 }
@@ -139,7 +139,6 @@ void lab1_2(){
     char st11[1000] = "3468932";
     st1 = st11;
     int n = 4;
-    // char st1[1000] = "3468932";
     // char st1[1000] = "";
     // char st1[1000] = "3";
     // char st1[1000] = "n";
@@ -292,6 +291,15 @@ int check_correctness_symbol(char ch){
 
 
 int print_all_matching_words(char st[], const char w[], int result[]){
+    if (st == NULL) {
+        return 1;
+    }
+    if (w == NULL) {
+        return 1;
+    }
+    if (result == NULL) {
+        return 1;
+    }
     int start_sl = 0, i = 0, f = 0, r_check = 0;
     int len_w = analogue_strlen(w);
     int ri = 0;
