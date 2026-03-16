@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
-#include <errno.h>
-#include <stdlib.h>
+#include <limits.h>
+
 
 void lab1_1();
 int check_correctness_ASCII(char st[]);
@@ -13,14 +13,14 @@ int analogue_strlen(const char st[]);
 void lab1_2();
 int not_empty(int len_st);
 int only_numbers(const char st[], int len_st);
-int check_divisible_n(const char st[], int n);
+int check_divisible_n(const char st[], int n, int len_st);
 int do_check(char st[], int n);
 
 
 int lab1_3();
 int check_correctness_symbol(char ch);
 int check_w(char w[]);
-int print_all_matching_words(char st[], const char w[], int result[]);
+int print_all_matching_words(char st[], const char w[], int result[], int size_bf);
 
 
 int main() {
@@ -169,22 +169,17 @@ int only_numbers(const char st[], int len_st){
     return 0;
 }
 
-int check_divisible_n(const char st[], int n){
+int check_divisible_n(const char st[], int n, int len_st){
     if (st == NULL) {
         return 1;
     }
-    errno = 0;
-    long result = strtol(st, NULL, 10);
-
-    if (errno == ERANGE)
-        return 1;
-    /*if (len_st == 1){
-        if ((st[0] - '0') % 4 == 0)
+    long result = 1;
+    long max_long = LONG_MAX;
+    for (int i = 0; i < len_st; i++) {
+        if (result > max_long / 10 - st[i] - '0')
             return 1;
+        result = result * 10 + (st[i] - '0');
     }
-
-    if ((st[len_st - 1] - '0' + (st[len_st - 2] - '0') * 10) % 4 == 0)
-        return 0;*/
     if (result % n == 0)
         return 0;
     return 1;
@@ -206,7 +201,7 @@ int do_check(char st[], int n){
         return 1;
     }
 
-    int r = check_divisible_n(st, n) != 0;
+    int r = check_divisible_n(st, n, len_st) != 0;
     if (r == 1)
         printf("the number is not divisible");
     else
@@ -262,7 +257,8 @@ int lab1_3() {
         printf("error");
         return 1;
     }
-    if (print_all_matching_words(st, w, result) == 1) {
+    int size_bf = 1000;
+    if (print_all_matching_words(st, w, result, size_bf) == 1) {
         printf("error2");
         return 1;
     }
@@ -290,7 +286,7 @@ int check_correctness_symbol(char ch){
 }
 
 
-int print_all_matching_words(char st[], const char w[], int result[]){
+int print_all_matching_words(char st[], const char w[], int result[], int size_bf){
     if (st == NULL) {
         return 1;
     }
@@ -314,6 +310,10 @@ int print_all_matching_words(char st[], const char w[], int result[]){
         }
         else{
             if (i > start_sl && (f == 1 || (i - start_sl != len_w))){
+
+                if (ri >= size_bf - 3)
+                    return 1;
+
                 result[ri] = start_sl;
                 ri++;
                 result[ri] = i - start_sl; // длина
@@ -325,7 +325,8 @@ int print_all_matching_words(char st[], const char w[], int result[]){
         i ++;
     }
     if (i > start_sl && (f == 1 || (i - start_sl != len_w))){
-        // сохраняем в массив индекс начала слова и индекс конца слова
+        if (ri >= size_bf - 3)
+            return 1;
         result[ri] = start_sl;
         ri++;
         result[ri] = i - start_sl;
